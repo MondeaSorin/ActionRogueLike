@@ -7,7 +7,10 @@
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
+// debugg includes
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -16,11 +19,15 @@ ASCharacter::ASCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
-	SpringArmComp->SetupAttachment(GetRootComponent());
+	SpringArmComp->bUsePawnControlRotation = true;
+	SpringArmComp->SetupAttachment(RootComponent);
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
+	bUseControllerRotationYaw = false;
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +41,14 @@ void ASCharacter::BeginPlay()
 void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FVector Offset = GetActorRightVector() * 70.0f;
+	
+	DrawDebugDirectionalArrow(GetWorld(), GetActorLocation() + Offset, GetActorLocation() + GetActorForwardVector() * 100.0f,
+		20.0f, FColor::Red, false, -1, 0, 2);
+	
+	DrawDebugDirectionalArrow(GetWorld(), GetActorLocation() + Offset, GetActorLocation() + GetControlRotation().Vector() * 100.0f,
+		20.0f, FColor::Blue, false, -1, 0, 2);
 
 }
 
@@ -53,7 +68,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASCharacter::Move);
 	EnhancedInputComponent->BindAction(MouseTurnAction, ETriggerEvent::Triggered, this, &ASCharacter::MouseTurn);
-	
+	 
 }
 
 void ASCharacter::Move(const FInputActionInstance& Instance)
