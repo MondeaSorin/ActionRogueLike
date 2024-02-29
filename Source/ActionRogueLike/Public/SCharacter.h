@@ -3,14 +3,43 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputAction.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
+
+struct FInputActionInstance;
+struct FInputActionValue;
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputMappingContext> DefaultInputMapping;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> MouseTurnAction;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UCameraComponent> CameraComp;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArmComp;
+
+	// input types are: FInputActionValue, FInputActionInstance, none
+	void Move(const FInputActionInstance& Instance);
+	void MouseTurn(const FInputActionValue& InputValue);
+	
 public:
 	// Sets default values for this character's properties
 	ASCharacter(); 
