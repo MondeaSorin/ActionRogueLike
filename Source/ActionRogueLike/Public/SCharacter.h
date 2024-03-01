@@ -20,7 +20,13 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
 
+public:
+	ASCharacter(); 
+
+protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultInputMapping;
 
@@ -29,6 +35,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MouseTurnAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> PrimaryAttackAction;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> CameraComp;
@@ -39,20 +48,13 @@ protected:
 	// input types are: FInputActionValue, FInputActionInstance, none
 	void Move(const FInputActionInstance& Instance);
 	void MouseTurn(const FInputActionValue& InputValue);
+	void PrimaryAttack();
 	
-public:
-	// Sets default values for this character's properties
-	ASCharacter(); 
-
-protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
