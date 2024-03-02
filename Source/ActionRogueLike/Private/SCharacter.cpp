@@ -11,6 +11,7 @@
 
 // debugg includes
 #include "DrawDebugHelpers.h"
+#include "SInteractionComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -25,6 +26,7 @@ ASCharacter::ASCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComp->SetupAttachment(SpringArmComp);
 
+	InteractionComponent = CreateDefaultSubobject<USInteractionComponent>("InteractionComponent");
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
 	bUseControllerRotationYaw = false;
@@ -57,6 +59,11 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (!InteractionComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InteractionComponent is null"));
+	}
+	
 	APlayerController* PC = GetController<APlayerController>();
 	ULocalPlayer* LP = PC ? PC->GetLocalPlayer() : nullptr;
 	
@@ -69,9 +76,9 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASCharacter::Move);
 	EnhancedInputComponent->BindAction(MouseTurnAction, ETriggerEvent::Triggered, this, &ASCharacter::MouseTurn);
 
-	// Attacks
+	// Attacks & Interacitons
 	EnhancedInputComponent->BindAction(PrimaryAttackAction,ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
-	 
+	EnhancedInputComponent->BindAction(PrimaryInteractAction, ETriggerEvent::Started, this, &ASCharacter::PrimaryInteract);
 }
 
 void ASCharacter::Move(const FInputActionInstance& Instance)
@@ -108,4 +115,10 @@ void ASCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+void ASCharacter::PrimaryInteract()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Primary Interact called"));
+	InteractionComponent->PrimaryInteract();
 }

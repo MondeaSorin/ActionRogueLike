@@ -8,7 +8,7 @@
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class USGamplayInterface : public UInterface
+class USGameplayInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,7 +16,7 @@ class USGamplayInterface : public UInterface
 /**
  * 
  */
-class ACTIONROGUELIKE_API ISGamplayInterface
+class ACTIONROGUELIKE_API ISGameplayInterface
 {
 	GENERATED_BODY()
 

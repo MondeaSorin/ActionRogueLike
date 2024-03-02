@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USInteractionComponent;
 struct FInputActionInstance;
 struct FInputActionValue;
 class USpringArmComponent;
@@ -39,16 +40,23 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> PrimaryAttackAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> PrimaryInteractAction;
+	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> CameraComp;
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USpringArmComponent> SpringArmComp;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USInteractionComponent> InteractionComponent;
+	
 	// input types are: FInputActionValue, FInputActionInstance, none
 	void Move(const FInputActionInstance& Instance);
 	void MouseTurn(const FInputActionValue& InputValue);
 	void PrimaryAttack();
+	void PrimaryInteract();
 	
 	virtual void BeginPlay() override;
 
