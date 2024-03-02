@@ -76,7 +76,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASCharacter::Move);
 	EnhancedInputComponent->BindAction(MouseTurnAction, ETriggerEvent::Triggered, this, &ASCharacter::MouseTurn);
 
-	// Attacks & Interacitons
+	// Attacks & Interactions
 	EnhancedInputComponent->BindAction(PrimaryAttackAction,ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
 	EnhancedInputComponent->BindAction(PrimaryInteractAction, ETriggerEvent::Started, this, &ASCharacter::PrimaryInteract);
 }
@@ -87,7 +87,7 @@ void ASCharacter::Move(const FInputActionInstance& Instance)
 	ControlRot.Pitch = 0.0f;
 	ControlRot.Roll = 0.0f;
 
-	// Get value from input (combined value from WASD keys or single Gamepad stick) and convert to Vector (x,y)
+	// Get value from input (combined value from WASD keys or single Game pad stick) and convert to Vector (x,y)
 	const FVector2D AxisValue = Instance.GetValue().Get<FVector2D>();
 
 	// Move forward/back
